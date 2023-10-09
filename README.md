@@ -7,6 +7,7 @@ Building a ETL-pipeline.
 Git manager: Araz <br>
 Scrum-master: Yat<br>
 Documentation manager: Simon<br>
+Airflow manager: Khaqan
 
 
 1. Introduction: group name, members , preferably use powerpoint
