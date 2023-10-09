@@ -4,6 +4,11 @@ Araz, Khaqan, Simon, Yatwan
 
 Building a ETL-pipeline.
 
+Git manager: Araz
+Scrum-master: Yat
+Documentation manager: Simon
+
+
 # 1. Introduction: group name, members , preferably use powerpoint
 # 2. Demonstration of:
   1. an Airflow instance
