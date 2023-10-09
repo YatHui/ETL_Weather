@@ -1,6 +1,6 @@
 # etl_miniproject
 
-Araz, Khaqan, Simon, Yatwan
+Araz, Khaqan, Simon, Yat
 
 Building a ETL-pipeline.
 
