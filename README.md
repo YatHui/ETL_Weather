@@ -4,9 +4,9 @@ Araz, Khaqan, Simon, Yatwan
 
 Building a ETL-pipeline.
 
-Git manager: Araz
-Scrum-master: Yat
-Documentation manager: Simon
+Git manager: Araz <br>
+Scrum-master: Yat<br>
+Documentation manager: Simon<br>
 
 
 # 1. Introduction: group name, members , preferably use powerpoint
