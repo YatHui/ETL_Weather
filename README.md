@@ -14,7 +14,7 @@ Building a ETL-pipeline.
 3. Experiences :
   1. Troubles and findings (git/github, python, pandas , Airflow)
 4. The Agile process
-  1. Planning (How many s prints ? Design decisions , Things you chose to do or not to do)
+  1. Planning (How many sprints ? Design decisions , Things you chose to do or not to do)
   2. Sprints (Describe the sprint(s) and the ups and downs)
   3. Who worked with what during the process?
 5. What have you learned
