@@ -5,8 +5,8 @@ Araz, Khaqan, Simon, Yatwan
 Building a ETL-pipeline.
 
 Git manager: Araz <br>
-Scrum-master: Yat<br>
-Documentation manager: Simon<br>
+Scrum-master: Simon<br>
+Documentation manager: Yat<br>
 Airflow manager: Khaqan
 
 
