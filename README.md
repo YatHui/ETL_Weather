@@ -2,4 +2,6 @@
 
 Araz, Khaqan, Simon, Yatwan
 
-Building  ETL-pipeline.
+Building a ETL-pipeline.
+
+
