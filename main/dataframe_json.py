@@ -40,6 +40,7 @@ def clean_time(data):
     return filtered_df
 
 
-find_temperature(json_data)
-test = clean_time(data)
-print(test)
+if __name__=="__main__":
+    find_temperature(json_data)
+    test = clean_time(data)
+    print(test)
