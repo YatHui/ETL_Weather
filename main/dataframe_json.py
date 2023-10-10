@@ -26,6 +26,9 @@ def find_temperature(json_data):
 
 
 def clean_time(data):
+    date_object = datetime.datetime.now()
+    # specific_date = date_object.date()
+    specific_date = '2023-10-10'
     # Create a DataFrame from the collected data
     df = pd.DataFrame(data)
     # Remove the "Z" from the time column
@@ -33,11 +36,13 @@ def clean_time(data):
 
     # df['validTime'] = df['validTime'].str.replace(':00', '')
     df['validTime'] = df['validTime'].str.slice(0, 5)
-    return df
+    filtered_df = df[df['validDate'] == specific_date]
+    return filtered_df
 
-today = datetime.datetime.now()
+date_object = datetime.datetime.now()
+specific_date1 = date_object.date()
 
 find_temperature(json_data)
 test = clean_time(data)
 print(test)
-print(today)
+print(specific_date1)
