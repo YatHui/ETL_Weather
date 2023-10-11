@@ -86,6 +86,7 @@ def _clean_data(input_json_file, output_json_file):
         
         # Remove the "Z" from the time column
         df['validTime'] = df['validTime'].str.replace('Z', '')
+        # df['validTime'] = df['validTime'].str.replace(':00', '')
         df['validTime'] = df['validTime'].str.slice(0, 5)
         filtered_df = df[df['validDate'] == specific_date]
         
@@ -96,6 +97,7 @@ def _clean_data(input_json_file, output_json_file):
 def _plot_data(input_json_path, value, output_path):
     
     df = pd.read_json(input_json_path)
+    df['validTime'] = df['validTime'].str.replace(':00', '')
     date_object = datetime.now().date()
     specific_date = date_object.strftime("%Y-%m-%d") 
 
@@ -104,10 +106,11 @@ def _plot_data(input_json_path, value, output_path):
 
     # Plot temperature data
     plt.plot(df['validTime'], df[value], color= 'tab:blue')
+    
 
     # Set labels and title
     plt.xlabel('Time', color = 'tab:gray', fontsize=10 )
-    plt.ylabel(f'{value}',  color = 'tab:gray', fontsize=10)
+    plt.ylabel(f'{value.capitalize()}',  color = 'tab:gray', fontsize=10)
     plt.title(f'{value.capitalize()}: {specific_date}', fontsize = 20 , color = 'tab:gray' , weight="bold")
     # Save the graph as an image
     plt.tight_layout()
