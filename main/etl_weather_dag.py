@@ -99,23 +99,17 @@ def _plot_data(input_json_path, output_path):
     date_object = datetime.now().date()
     specific_date = date_object.strftime("%Y-%m-%d") 
 
-    # Filter the DataFrame for a specific date (e.g., '2023-10-11')
-    
-    filtered_df = df[df['validDate'] == specific_date]
-
-
     # Create a line graph for temperature
     plt.figure(figsize=(10, 6))  # Set the figure size (width, height)
 
     # Plot temperature data
-    plt.plot(filtered_df['validTime'], filtered_df['temperature'], color= 'tab:blue')
+    plt.plot(df['validTime'], df['temperature'], color= 'tab:blue')
 
     # Set labels and title
     plt.xlabel('Time', color = 'tab:gray', fontsize=10 )
     plt.ylabel('Temperature (°C)',  color = 'tab:gray', fontsize=10)
     plt.title(f'Temperature: {specific_date}', fontsize = 20 , color = 'tab:gray' , weight="bold")
     # Save the graph as an image
-    # save_path = './etl_data/temperature_graph.png'
     plt.tight_layout()
     plt.savefig(output_path)
 
