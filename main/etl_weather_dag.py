@@ -6,6 +6,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 url = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18/lat/59/data.json"
 response = requests.get(url)
 
@@ -23,6 +24,7 @@ def _get_json():
         print(f"Request failed with status code {response.status_code}")
 
     return raw_data
+
 
 def _find_temperature():
     json_file_path = './etl_data/raw_data.json'
@@ -46,6 +48,7 @@ def _find_temperature():
     # write json file
     df.to_json('./etl_data/temperature_data.json', orient='records', indent=4)
 
+
 def _find_humidity():
     json_file_path = './etl_data/raw_data.json'
     # Read the JSON data from the file
@@ -68,6 +71,7 @@ def _find_humidity():
     # write json file
     df.to_json('./etl_data/humidity_data.json', orient='records', indent=4)
 
+
 def _clean_data(input_json_file, output_json_file):
     # Read the JSON data from the file
     with open(input_json_file, 'r') as json_file:
@@ -88,23 +92,32 @@ def _clean_data(input_json_file, output_json_file):
         # write json file
         filtered_df.to_json(output_json_file, orient='records', indent=4)
 
-def _plot_data(input_json_file, output_file):
+
+def _plot_data(input_json_path, output_path):
     
-    df = pd.read_json(input_json_file)
+    df = pd.read_json(input_json_path)
+    date_object = datetime.now().date()
+    specific_date = date_object.strftime("%Y-%m-%d") 
+
+    # Filter the DataFrame for a specific date (e.g., '2023-10-11')
+    
+    filtered_df = df[df['validDate'] == specific_date]
+
+
     # Create a line graph for temperature
     plt.figure(figsize=(10, 6))  # Set the figure size (width, height)
 
     # Plot temperature data
-    plt.plot(df['validTime'], df['temperature'], color= 'tab:blue')
+    plt.plot(filtered_df['validTime'], filtered_df['temperature'], color= 'tab:blue')
 
     # Set labels and title
-    plt.xlabel('Time', color = 'tab:gray', fontsize=10)
+    plt.xlabel('Time', color = 'tab:gray', fontsize=10 )
     plt.ylabel('Temperature (°C)',  color = 'tab:gray', fontsize=10)
-    plt.title(f'Temperature {df['validDate'][0]}', fontsize = 20 , color = 'tab:gray' , weight="bold")
-
-    # Show the graph
+    plt.title(f'Temperature: {specific_date}', fontsize = 20 , color = 'tab:gray' , weight="bold")
+    # Save the graph as an image
+    # save_path = './etl_data/temperature_graph.png'
     plt.tight_layout()
-    plt.savefig(output_file)
+    plt.savefig(output_path)
 
 with DAG("etl_project_dag1.3", start_date=datetime(2023, 10, 10), 
     schedule_interval='*/1 * * * *', catchup=False) as dag:
@@ -145,7 +158,7 @@ with DAG("etl_project_dag1.3", start_date=datetime(2023, 10, 10),
         plot_humidity = PythonOperator(
             task_id='plot_humidity_data',
             python_callable=_plot_data,
-            op_args=['./etl_data/cleaned_humidity_data.json', './etl_datap/lot_humidity_data.png']
+            op_args=['./etl_data/cleaned_humidity_data.json', './etl_data/plot_humidity_data.png']
         )
 
 
