@@ -93,7 +93,7 @@ def _clean_data(input_json_file, output_json_file):
         filtered_df.to_json(output_json_file, orient='records', indent=4)
 
 
-def _plot_data(input_json_path, output_path):
+def _plot_data(input_json_path, value, output_path):
     
     df = pd.read_json(input_json_path)
     date_object = datetime.now().date()
@@ -103,12 +103,12 @@ def _plot_data(input_json_path, output_path):
     plt.figure(figsize=(10, 6))  # Set the figure size (width, height)
 
     # Plot temperature data
-    plt.plot(df['validTime'], df['temperature'], color= 'tab:blue')
+    plt.plot(df['validTime'], df[value], color= 'tab:blue')
 
     # Set labels and title
     plt.xlabel('Time', color = 'tab:gray', fontsize=10 )
-    plt.ylabel('Temperature (°C)',  color = 'tab:gray', fontsize=10)
-    plt.title(f'Temperature: {specific_date}', fontsize = 20 , color = 'tab:gray' , weight="bold")
+    plt.ylabel(f'{value}',  color = 'tab:gray', fontsize=10)
+    plt.title(f'{value.capitalize()}: {specific_date}', fontsize = 20 , color = 'tab:gray' , weight="bold")
     # Save the graph as an image
     plt.tight_layout()
     plt.savefig(output_path)
@@ -146,13 +146,13 @@ with DAG("etl_project_dag1.3", start_date=datetime(2023, 10, 10),
         plot_temperature = PythonOperator(
             task_id='plot_temperature_data',
             python_callable=_plot_data,
-            op_args=['./etl_data/cleaned_temperature_data.json', './etl_data/plot_temperature.png']
+            op_args=['./etl_data/cleaned_temperature_data.json','temperature', './etl_data/plot_temperature.png']
         )
 
         plot_humidity = PythonOperator(
             task_id='plot_humidity_data',
             python_callable=_plot_data,
-            op_args=['./etl_data/cleaned_humidity_data.json', './etl_data/plot_humidity_data.png']
+            op_args=['./etl_data/cleaned_humidity_data.json','humidity', './etl_data/plot_humidity_data.png']
         )
 
 
