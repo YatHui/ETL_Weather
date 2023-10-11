@@ -88,21 +88,21 @@ def _clean_data(input_json_file, output_json_file):
         # write json file
         filtered_df.to_json(output_json_file, orient='records', indent=4)
 
-def _plot_place_holder(input_json_file, output_file):
+def _plot_data(input_json_file, output_file):
+    
     df = pd.read_json(input_json_file)
     # Create a line graph for temperature
     plt.figure(figsize=(10, 6))  # Set the figure size (width, height)
 
     # Plot temperature data
-    plt.plot(df['validTime'], df['temperature'], marker='o', linestyle='-')
+    plt.plot(df['validTime'], df['temperature'], color= 'tab:blue')
 
     # Set labels and title
-    plt.xlabel('Time')
-    plt.ylabel('Temperature (°C)')
-    plt.title('Temperature')
+    plt.xlabel('Time', color = 'tab:gray', fontsize=10)
+    plt.ylabel('Temperature (°C)',  color = 'tab:gray', fontsize=10)
+    plt.title(f'Temperature {df['validDate'][0]}', fontsize = 20 , color = 'tab:gray' , weight="bold")
 
     # Show the graph
-    plt.grid(True)
     plt.tight_layout()
     plt.savefig(output_file)
 
@@ -138,13 +138,13 @@ with DAG("etl_project_dag1.3", start_date=datetime(2023, 10, 10),
 
         plot_temperature = PythonOperator(
             task_id='plot_temperature_data',
-            python_callable=_plot_place_holder,
+            python_callable=_plot_data,
             op_args=['./etl_data/cleaned_temperature_data.json', './etl_data/plot_temperature.png']
         )
 
         plot_humidity = PythonOperator(
             task_id='plot_humidity_data',
-            python_callable=_plot_place_holder,
+            python_callable=_plot_data,
             op_args=['./etl_data/cleaned_humidity_data.json', './etl_datap/lot_humidity_data.png']
         )
 

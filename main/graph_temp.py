@@ -1,34 +1,27 @@
-# Imports dataframe_json.py to plot a temperature graph
-
 import pandas as pd
 import json
 import matplotlib.pyplot as plt
 import datetime
-from dataframe_json import * 
 
-# Import dataframe from dataframe_json.py
-def plot_df():
-    # df = df.read_json("/etl_data/raw_data.json")
-    try:
-        df = clean_time()
-        print(df)
+def plot_data(input_json_file, output_file):
+    
+    df = pd.read_json(input_json_file)
+    # Create a line graph for temperature
+    plt.figure(figsize=(10, 6))  # Set the figure size (width, height)
 
-        # if 'validTime' in df.columns and 'temperature' in df.columns:
-        #     plt.figure(figsize=(10, 6))  # Set the figure size (width, height)
-        #     plt.plot(df['validTime'], df['temperature'], marker='o', linestyle='-')
-        #     plt.xlabel('Time')
-        #     plt.ylabel('Temperature (°C)')
-        #     today = datetime.datetime.now()
-        #     plt.title(f'Temperature for {today}')
-        #     plt.grid(True)
-        #     plt.tight_layout()
-        #     plt.show()
-        #else:
-            # print("Data not found")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    # Plot temperature data
+    plt.plot(df['validTime'], df['temperature'], color= 'tab:blue')
 
-plot_df()
+    # Set labels and title
+    plt.xlabel('Time', color = 'tab:gray', fontsize=10)
+    plt.ylabel('Temperature (°C)',  color = 'tab:gray', fontsize=10)
+    plt.title(f'Temperature {df['validDate'][0]}', fontsize = 20 , color = 'tab:gray' , weight="bold")
 
-# write a function to plot and save graph
+    # Show the graph
+    plt.tight_layout()
+    plt.savefig(output_file)
 
+
+read_path = './etl_data/cleaned_temperature_data.json'
+save_path = './etl_data/temperature_graph.png'
+plot_data(read_path,save_path)
