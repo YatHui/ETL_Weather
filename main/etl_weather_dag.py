@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 import requests
 import pandas as pd
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 url = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18/lat/59/data.json"
 response = requests.get(url)
@@ -88,7 +88,25 @@ def _clean_data(input_json_file, output_json_file):
         # write json file
         filtered_df.to_json(output_json_file, orient='records', indent=4)
 
-with DAG("etl_project_dag1.2", start_date=datetime(2023, 10, 10), 
+def _plot_place_holder(input_json_file, output_file):
+    df = pd.read_json(input_json_file)
+    # Create a line graph for temperature
+    plt.figure(figsize=(10, 6))  # Set the figure size (width, height)
+
+    # Plot temperature data
+    plt.plot(df['validTime'], df['temperature'], marker='o', linestyle='-')
+
+    # Set labels and title
+    plt.xlabel('Time')
+    plt.ylabel('Temperature (°C)')
+    plt.title('Temperature')
+
+    # Show the graph
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(output_file)
+
+with DAG("etl_project_dag1.3", start_date=datetime(2023, 10, 10), 
     schedule_interval='*/1 * * * *', catchup=False) as dag:
 
         get_json = PythonOperator(
@@ -118,6 +136,18 @@ with DAG("etl_project_dag1.2", start_date=datetime(2023, 10, 10),
             op_args=['./etl_data/humidity_data.json', './etl_data/cleaned_humidity_data.json']
         )
 
+        plot_temperature = PythonOperator(
+            task_id='plot_temperature_data',
+            python_callable=_plot_place_holder,
+            op_args=['./etl_data/cleaned_temperature_data.json', './etl_data/plot_temperature.png']
+        )
 
-        get_json >> find_temperature >> clean_temperature
-        get_json >> find_humidity >> clean_humidity
+        plot_humidity = PythonOperator(
+            task_id='plot_humidity_data',
+            python_callable=_plot_place_holder,
+            op_args=['./etl_data/cleaned_humidity_data.json', './etl_datap/lot_humidity_data.png']
+        )
+
+
+        get_json >> find_temperature >> clean_temperature >> plot_temperature
+        get_json >> find_humidity >> clean_humidity >> plot_humidity
