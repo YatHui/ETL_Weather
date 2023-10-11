@@ -18,7 +18,7 @@ def plot_data(input_json_path, value, output_path):
     plt.figure(figsize=(10, 6))  # Set the figure size (width, height)
 
     # Plot temperature data
-    plt.plot(filtered_df['validTime'], filtered_df[value], color= 'tab:blue')
+    plt.scatter(filtered_df['validTime'], filtered_df[value], color= 'tab:blue')
 
     # Set labels and title
     plt.xlabel('Time', color = 'tab:gray', fontsize=10 )
