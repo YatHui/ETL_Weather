@@ -77,10 +77,9 @@ def _clean_data(input_json_file, output_json_file):
     with open(input_json_file, 'r') as json_file:
         json_data = json.load(json_file)
         
-        #Use todays date
-        date_object = datetime.now().date()
-        specific_date = date_object.strftime("%Y-%m-%d")
-        
+        # Use the earliest date from the latest data set
+        specific_date = json_data[0]['validDate']
+
         # Create a DataFrame from the collected data
         df = pd.DataFrame(json_data)
         
@@ -89,7 +88,9 @@ def _clean_data(input_json_file, output_json_file):
         # df['validTime'] = df['validTime'].str.replace(':00', '')
         df['validTime'] = df['validTime'].str.slice(0, 5)
         filtered_df = df[df['validDate'] == specific_date]
-        
+        # filtered_df = df.loc[:23,] # for 24h use this instead of the line before
+
+
         # write json file
         filtered_df.to_json(output_json_file, orient='records', indent=4)
 
@@ -98,8 +99,7 @@ def _plot_data(input_json_path, value, output_path):
     
     df = pd.read_json(input_json_path)
     df['validTime'] = df['validTime'].str.replace(':00', '')
-    date_object = datetime.now().date()
-    specific_date = date_object.strftime("%Y-%m-%d") 
+    specific_date = df.loc[0,'validDate']
 
     # Create a line graph for temperature
     plt.figure(figsize=(10, 6))  # Set the figure size (width, height)
